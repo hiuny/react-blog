@@ -8,7 +8,7 @@ app.use(async (ctx, next) => {
     return
   }
   await next()
-  console.log('END')
+  console.log('! END !!')
 })
 app.use((ctx, next) => {
   console.log(2)
