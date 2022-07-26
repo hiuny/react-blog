@@ -8,7 +8,7 @@ import User from '../../models/user'
  *    password: 'mypass123'
  * }
  */
-export const register = async ctx => {
+export const register = async ctx => { 
   // Request Body 검증하기
   const schema = Joi.object().keys({
     username: Joi.string()
@@ -36,6 +36,11 @@ export const register = async ctx => {
     await user.setPassword(password) // 비밀번호 설정
     await user.save() // 데이터베이스에 저장
     ctx.body = user.serialize()
+    const token = user.generateToken()
+    ctx.cookies.set('access_token', token, {
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+      httpOnly: true,
+    })
   } catch (e) {
     ctx.throw(500, e)
   }
@@ -69,13 +74,27 @@ export const login = async ctx => {
       return
     }
     ctx.body = user.serialize()
+    const token = user.generateToken()
+    ctx.cookies.set('access_token', token, {
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7일
+      httpOnly: true,
+    })
   } catch (e) {
     ctx.throw(500, e)
   }
 }
 
+/**
+ * GET /api/auth/check
+ */
 export const check = async ctx => {
-  // 회원가입
+  const { user } = ctx.state
+  if (!user) {
+    // 로그인 중 아님
+    ctx.status = 401 // Unauthorized
+    return
+  }
+  ctx.body = user
 }
 
 export const logout = async ctx => {
