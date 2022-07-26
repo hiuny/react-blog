@@ -66,6 +66,10 @@ export const list = async ctx => {
     const postCount = await Post.countDocuments().exec()
     ctx.set('List-Page', Math.ceil(postCount / 10))
     ctx.body = posts
+      .map(post => post.toJSON())
+      .map(post => ({
+        ...post,
+        body: post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}...` }))
   } catch (e) {
     ctx.throw(500, e)
   }
