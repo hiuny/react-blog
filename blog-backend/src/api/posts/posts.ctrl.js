@@ -25,7 +25,7 @@ export const getPostById = async (ctx, next) => {
 
 export const checkOwnPost = (ctx, next) => {
   const { user, post } = ctx.state
-  // console.log('그냥 출력하면 뭐길래?', post.user._id)
+  // post.user._id 를 출력해보면 new ObjectId("62dfb02e98178f476351a773") 로 나옴
   if (post.user._id.toString() !== user._id) {
     ctx.status = 403
     return
@@ -66,7 +66,7 @@ export const write = async ctx => {
 }
 
 /**
- * GET /api/posts
+ * GET /api/posts?username=&tag=&page=
  */
 export const list = async ctx => {
   // query는 문자열이기 때문에 숫자로 변환해 주어야 합니다.
@@ -76,15 +76,21 @@ export const list = async ctx => {
     ctx.status = 400
     return
   }
+  const { tag, username } = ctx.query
+  // tag, username 값이 유효하면 객체 안에 넣고, 그렇지 않으면 넣지 않음
+  const query = {
+    ...(username ? { 'user.username': username } : {}),
+    ...(tag ? { tags: tag } : {}),
+  }
   try {
     const posts = await Post
-      .find()
+      .find(query)
       .sort({ _id: -1 })
       .limit(10)
       .skip((page - 1) * 10)
       .lean()
       .exec()
-    const postCount = await Post.countDocuments().exec()
+    const postCount = await Post.countDocuments(query).exec()
     ctx.set('List-Page', Math.ceil(postCount / 10))
     ctx.body = posts.map(post => ({
       ...post,
