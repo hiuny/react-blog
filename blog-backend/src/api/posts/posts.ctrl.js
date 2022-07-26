@@ -16,8 +16,19 @@ export const getPostById = async (ctx, next) => {
     if (!post) {
       ctx.status = 404 // Not Found
     }
+    ctx.state.post = post
   } catch (e) {
     ctx.throw(500, e)
+  }
+  return next()
+}
+
+export const checkOwnPost = (ctx, next) => {
+  const { user, post } = ctx.state
+  // console.log('그냥 출력하면 뭐길래?', post.user._id)
+  if (post.user._id.toString() !== user._id) {
+    ctx.status = 403
+    return
   }
   return next()
 }
