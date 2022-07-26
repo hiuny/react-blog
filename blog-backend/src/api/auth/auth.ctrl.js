@@ -97,6 +97,10 @@ export const check = async ctx => {
   ctx.body = user
 }
 
+/**
+ * POST /api/auth/logout
+ */
 export const logout = async ctx => {
-  // 회원가입
+  ctx.cookies.set('access_token')
+  ctx.status = 204 // No Content
 }
