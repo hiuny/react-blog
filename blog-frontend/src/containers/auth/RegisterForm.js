@@ -36,7 +36,7 @@ const RegisterForm = () => {
   }
   // 컴포넌트가 처음 렌더링될 때 form을 초기화 함
   useEffect(() => {
-    dispatch(initializeForm('register'))
+    return dispatch(initializeForm('register'))
   }, [dispatch])
 
   // 회원가입 성공/실패 처리
