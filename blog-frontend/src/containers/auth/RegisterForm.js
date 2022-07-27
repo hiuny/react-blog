@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AuthForm from '../../components/auth/AuthForm'
 import { changeField, initializeForm, register } from '../../modules/auth'
 import { check } from '../../modules/user'
+import { useNavigate } from 'react-router-dom'
 
 const RegisterForm = () => {
   const dispatch = useDispatch()
@@ -59,6 +60,14 @@ const RegisterForm = () => {
       console.log(user)
     }
   }, [user])
+
+  const navigate = useNavigate()
+  // user 값이 잘 설정되었는지 확인
+  useEffect(() => {
+    if (user) {
+      navigate('/') // 홈 화면으로 이동
+    }
+  }, [navigate, user])
 
   return (
     <AuthForm
