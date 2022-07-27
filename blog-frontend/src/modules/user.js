@@ -25,14 +25,11 @@ export default handleActions(
       ...state,
       user,
     }),
-    [CHECK_SUCCESS]: (state, { payload: user }) => {
-      console.log('로그인 체크 성공', user);
-      return {
-        ...state,
-        user,
-        checkError: null,
-      }
-    },
+    [CHECK_SUCCESS]: (state, { payload: user }) => ({
+      ...state,
+      user,
+      checkError: null,
+    }),
     [CHECK_FAILURE]: (state, { payload: error }) => ({
       ...state,
       user: null,
