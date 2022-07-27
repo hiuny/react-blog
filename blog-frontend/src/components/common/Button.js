@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 import palette from '../../lib/styles/palette'
 
 const StyledButton = styled.button`
@@ -35,6 +36,17 @@ const StyledButton = styled.button`
     `
   }
 `
-const Button = props => <StyledButton {...props} />
+const Button = ({ to, history, ...rest }) => {
+  const navigate = useNavigate()
+  const onClick = e => {
+    if (to) {
+      navigate(to)
+    }
+    if (rest.onClick) {
+      rest.onClick(e)
+    }
+  }
+  return <StyledButton {...rest} onClick={onClick} />
+}
 
 export default Button
