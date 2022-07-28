@@ -5,6 +5,7 @@ import { takeLatest } from 'redux-saga/effects'
 
 const INITIALIZE = 'write/INITIALIZE' // 모든 내용 초기화
 const CHANGE_FIELD = 'write/CHANGE_FIELD' // 특정 key 값 바꾸기
+const SET_ORIGINAL_POST = 'write/SET_ORIGINAL_POST'
 const [
   WRITE_POST,
   WRITE_POST_SUCCESS,
@@ -16,6 +17,7 @@ export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({ key
 export const writePost = createAction(WRITE_POST, ({ title, body, tags }) => ({
   title, body, tags,
 }))
+export const setOriginalPost = createAction(SET_ORIGINAL_POST, post => post)
 
 // 사가 생성
 const writePostSaga = createRequestSaga(WRITE_POST, postsAPI.writePost)
@@ -29,6 +31,7 @@ const initialState = {
   tags: [],
   post: null,
   postError: null,
+  originalPostId: null,
 }
 
 const write = handleActions(
@@ -54,6 +57,16 @@ const write = handleActions(
       ...state,
       postError,
     }),
+    [SET_ORIGINAL_POST]: (state, { payload: post }) => {
+      console.log('SET_ORIGINAL_POST 여기로 오겠지', post)
+      return {
+        ...state,
+        title: post.title,
+        body: post.body,
+        tags: post.tags,
+        originalPostId: post._id,
+      }
+    },
   },
   initialState,
 )
