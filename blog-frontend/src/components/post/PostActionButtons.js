@@ -37,6 +37,7 @@ const PostActionButtons = ({ onEdit, onRemove }) => {
     setModal(false)
   }
   const onConfirm = () => {
+    console.log('여기')
     setModal(false)
     onRemove()
   }
