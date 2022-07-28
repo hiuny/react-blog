@@ -6,7 +6,6 @@ import user, { userSaga } from './user'
 import write, { writeSaga } from './write'
 import post, { postSaga } from './post'
 
-
 const rootReducer = combineReducers({
   auth,
   loading,
