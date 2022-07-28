@@ -60,7 +60,7 @@ const PostViewer = ({ post, error, loading }) => {
   if (loading || !post) {
     return <p>로딩중</p>;
   }
-  const { title, body, user, publishedDate, tags } = post
+  const { title, body, user, publishDate, tags } = post
   return (
     <PostViewerBlock>
       <PostHead>
@@ -69,11 +69,11 @@ const PostViewer = ({ post, error, loading }) => {
           <span>
             <b>{user.username}</b>
           </span>
-          <span>{new Date(publishedDate).toLocaleDateString()}</span>
+          <span>{new Date(publishDate).toLocaleDateString()}</span>
         </SubInfo>
         <Tags>
           {tags.map(tag => (
-            <div className="tag">#{tag}</div>
+            <div key={tag} className="tag">#{tag}</div>
           ))}
         </Tags>
       </PostHead>
