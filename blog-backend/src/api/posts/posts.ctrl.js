@@ -128,7 +128,7 @@ export const list = async ctx => {
       .lean()
       .exec()
     const postCount = await Post.countDocuments(query).exec()
-    ctx.set('List-Page', Math.ceil(postCount / 10))
+    ctx.set('Last-Page', Math.ceil(postCount / 10))
     ctx.body = posts.map(post => ({
       ...post,
       body: removeHtmlAndShorten(post.body)
