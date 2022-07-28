@@ -1,11 +1,11 @@
-import PostList from '../components/post/PostList'
 import HeaderContainer from '../containers/common/HeaderContainer'
+import PostListContainer from '../containers/posts/PostListContainer'
 
 const PostListPage = () => {
   return (
     <>
       <HeaderContainer />
-      <PostList />
+      <PostListContainer />
     </>
   )
 }
